@@ -1,0 +1,26 @@
+{
+  "autoload": {
+    "classmap": [
+      "database/DBconnection.php",
+      "core/Bootstrap.php",
+      "core/Controller.php",
+      "core/FluentPDO/FluentPDO.php",
+      "core/View.php",
+      "helpers/"
+    ],
+    "files":[
+           
+        ],
+  
+  "psr-4": {
+      "Router\\":"core/Router/",
+      "Plugins\\":"plug-ins",
+      "Routes\\":"routes/",
+      "Validator\\":"core/Validator/",
+      "Paginator\\":"core/Paginator/",
+      "Fileuploader\\":"core/Fileuploader"
+    }
+  
+  }
+
+}
