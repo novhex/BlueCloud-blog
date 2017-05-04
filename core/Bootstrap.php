@@ -1,4 +1,5 @@
 <?php
+
 /*
 * BlueCloud PHP MVC
 * Bluecloud is a simple PHP MVC app made using PHP
@@ -16,9 +17,11 @@ class Bootstrap {
 		
 		self::loadControllers();
 		self::loadGenericFunctions();
+		self::loadHTMLPurifier();
+
 	}
 
-	public static function loadControllers(){
+	private  static function loadControllers(){
 
 		foreach(glob(ROOT_DIR.'controllers/*.php') as $controllers){
 
@@ -26,13 +29,19 @@ class Bootstrap {
 		}
 	}
 
-	public static function loadGenericFunctions(){
+	private  static function loadGenericFunctions(){
 
 		foreach(glob(ROOT_DIR.'generic_functions/*.php') as $gen_func){
 
 			require_once $gen_func;
 		}
 	}
+
+	private static function loadHTMLPurifier(){
+
+		require_once ROOT_DIR.'core/HTMLPurifier/HTMLPurifier.auto.php';
+	}
+
 
 	public static function runApp(){
 

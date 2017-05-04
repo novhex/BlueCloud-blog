@@ -14,28 +14,6 @@
     	<div class="row">
     		<div class="col-md-12">
 
-    		<?php 
-
-    			if($errors):
-
-    				echo "<div class='alert alert-danger'>";
-
-    				echo " <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>";
-    				
-    				foreach($errors as $err):
-
-    					echo $err;
-
-    				endforeach;
-
-    				echo "</div>";
-
-    			endif;
-
-                
-                
-    		 ?>
-
 
     			<form method="POST" action="<?php echo base_url()."blog/update-blog"; ?>">
 
@@ -47,6 +25,7 @@
 
                     <div style="display:none;">
                         <input type="text" name="blog_id" value="<?php echo hspec_chars($blog['id']); ?>" />
+
                     </div>
 
 
@@ -57,11 +36,13 @@
     				<div class="form-group">
     					<label for="blog_title">Blog Title : </label>
     					<input type="text" name="blog_title" class="form-control" value="<?php echo hspec_chars($blog['title']); ?>" />
+                        <span class="help-block"><?php echo isset($errors['blog_title']) ? $errors['blog_title']: '';?></span>
     				</div>
 
     				 <div class="form-group">
     					<label for="blog_title">Contents : </label>
     					<textarea name="blog_contents" class="form-control" rows="5"><?php echo hspec_chars($blog['contents']); ?></textarea>
+                        <span class="help-block"><?php echo isset($errors['blog_contents']) ? $errors['blog_contents']: '';?></span>
     				</div>
 
     				<div class="form-group">

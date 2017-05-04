@@ -6,8 +6,7 @@
 
 
 namespace Router;
-
-use \Core\View\View;
+use View\View;
 
 class Router {
   public static $halts = false;
@@ -153,7 +152,7 @@ class Router {
         self::$error_callback = function() {
           header($_SERVER['SERVER_PROTOCOL']." 404 Not Found");
 
-            $data['message'] = 'Error 404 - Requested Page Not Found';
+            $data['message'] = 'Error 404 : Requested Page Not Found';
             $data['error_type'] = "404";
             View::show('errors/error',$data);
 

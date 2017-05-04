@@ -1,13 +1,15 @@
 <?php
 
 
-namespace controllers;
+namespace Controllers;
 
-use \Core\Controller\Controller;
+use Controller\Controller;
 
-use \Core\View\View;
+use View\View;
 
-use \Validator\Validator;
+use HybridLogic\Validation\Validator;
+
+use HybridLogic\Validation\Rule;
 	
 
 class Home extends Controller{
@@ -21,7 +23,7 @@ class Home extends Controller{
 
 	public function index(){
 
-		$data['blogs'] = $this->ORM->from('posts');
+		$data['blogs'] = $this->query_builder->from('posts');
 		$data['page_title'] = 'BlueCloud Blog';
 		$data['success_message'] = get_flashdata('success_message');
 		View::show('components/header',$data);
@@ -49,17 +51,24 @@ class Home extends Controller{
 
 		if(is_token_valid()==TRUE){
 
-		$validation = Validator::is_valid($_POST,array(
+			$validator = new Validator();
 
-				'blog_title'=>'required|min_len,2|max_len,35',
-				'blog_contents'=>'required|min_len,10'
-			));
+			$validator->set_label('blog_title','Blog Title')
+					  ->set_label('blog_contents','Blog Contents')
+					  ->set_label('blog_id','Blog ID')
+
+					  ->add_filter('blog_title','trim')
+					  ->add_filter('blog_contents','trim')
+
+					  ->add_rule('blog_title',new Rule\NotEmpty)
+					  ->add_rule('blog_contents',new Rule\NotEmpty)
+					  ->add_rule('blog_title',new Rule\MinLength(5));
 
 
-		if(is_array($validation)){
+		if($validator->is_valid($_POST)==FALSE){
 
-			set_flashdata('errors',$validation);
-			redirect(base_url()."blog/write-blog");
+			set_flashdata('errors',$validator->get_errors());
+			redirect(base_url('blog/write-blog'));
 		}else{
 
 			$data = array(
@@ -70,7 +79,7 @@ class Home extends Controller{
 
 				);
 
-			$query = $this->ORM->insertInto('posts',$data)->execute();
+			$query = $this->query_builder->insertInto('posts',$data)->execute();
 
 			//does the query returned last insert id as string ?
 
@@ -92,7 +101,7 @@ class Home extends Controller{
 
 	public function edit_blog($blog_slug){
 
-		$data['selected_blog'] = $this->ORM->from('posts')->where('title_slug',$blog_slug);
+		$data['selected_blog'] = $this->query_builder->from('posts')->where('title_slug',$blog_slug);
 		$data['errors'] = get_flashdata('errors');
 		$data['page_title'] = 'BlueCloud Blog';
 		$data['success_message'] = get_flashdata('success_message');
@@ -108,18 +117,26 @@ class Home extends Controller{
 
 		if(is_token_valid()==TRUE){
 
-		$validation = Validator::is_valid($_POST,array(
-
-				'blog_title'=>'required|min_len,2|max_len,35',
-				'blog_contents'=>'required|min_len,10',
-				'blog_id'=>'required|integer'
-			));
 
 
-		if(is_array($validation)){
+			$validator = new Validator();
 
-			set_flashdata('errors',$validation);
-			redirect(base_url()."blog/edit-blog/".get_data('post','blog_slug'));
+			$validator->set_label('blog_title','Blog Title')
+					  ->set_label('blog_contents','Blog Contents')
+					  ->set_label('blog_id','Blog ID')
+
+					  ->add_filter('blog_title','trim')
+					  ->add_filter('blog_contents','trim')
+
+					  ->add_rule('blog_title',new Rule\NotEmpty)
+					  ->add_rule('blog_contents',new Rule\NotEmpty)
+					  ->add_rule('blog_title',new Rule\MinLength(5));
+
+
+		if($validator->is_valid($_POST)==FALSE){
+
+			set_flashdata('errors',$validator->get_errors());
+			redirect(base_url('blog/edit-blog/').get_data('post','blog_slug'));
 			
 		}else{
 
@@ -130,7 +147,7 @@ class Home extends Controller{
 
 				);
 
-			$query = $this->ORM->update('posts')->set($data)->where('id', get_data('post','blog_id'))->execute();
+			$query = $this->query_builder->update('posts')->set($data)->where('id', get_data('post','blog_id'))->execute();
 
 
 			if($query){
@@ -152,7 +169,7 @@ class Home extends Controller{
 
 	public function delete_blog($blog_slug){
 
-	$query = $this->ORM->deleteFrom('posts')->where('title_slug',$blog_slug)->execute();
+	$query = $this->query_builder->deleteFrom('posts')->where('title_slug',$blog_slug)->execute();
 
 		if(is_int($query)){
 

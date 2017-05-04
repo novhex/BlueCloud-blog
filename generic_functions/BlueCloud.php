@@ -13,7 +13,7 @@
 * Do not delete this file or modify the contents of it unless you know what you are doing!
 */
 
-function base_url(){
+function base_url($ext = ''){
 
 	$host = $_SERVER['HTTP_HOST'];
 
@@ -23,16 +23,16 @@ function base_url(){
 
 		if(is_ssl()){
 
-			 return 'https://'.$_SERVER['HTTP_HOST'].'/';
+			 return 'https://'.$_SERVER['HTTP_HOST'].'/'.$ext;
 
 		}else{
 
-			return 'http://'.$_SERVER['HTTP_HOST'].'/';
+			return 'http://'.$_SERVER['HTTP_HOST'].'/'.$ext;
 		}
 
 	}else{
 
-		return 'http://'.$_SERVER['SERVER_NAME'].'/'.$urlparts[1].'/';
+			return 'http://'.$_SERVER['SERVER_NAME'].'/'.$urlparts[1].'/'.$ext;
 			
 	}
 
@@ -365,17 +365,17 @@ function regenerate_sessionId(){
 
 }
 
-function store_last_postdata($referer_url){
+function store_last_postdata($form_name){
 
-	if(strlen($referer_url)!==0){
+	if(strlen($form_name)!==0){
 
 		if(req_method()==="POST" && !empty($_POST) && is_ajax()==FALSE){
 
-			unset($_SESSION[$referer_url]);
+			unset($_SESSION[$form_name]);
 
 				 foreach($_POST as $key => $value) {
 
-					$_SESSION[$referer_url][$key] = $value;
+				$_SESSION[$form_name][$key] = $value;
 			}
 
 		}
@@ -406,5 +406,17 @@ function old_value($field_name){
 
 }
 
-store_last_postdata(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
+function get_config_value($config_index){
 
+	$values = parse_ini_file(ROOT_DIR.'config/config.ini',TRUE);
+
+	if(isset($values['config'][$config_index])){
+
+		return $values['config'][$config_index];
+	}
+}
+
+function purify_html(){
+
+	return new \HTMLPurifier(\HTMLPurifier_Config::createDefault());
+}

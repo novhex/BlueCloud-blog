@@ -6,10 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Validator\\' => array($baseDir . '/core/Validator'),
+    'View\\' => array($baseDir . '/core'),
     'Routes\\' => array($baseDir . '/routes'),
     'Router\\' => array($baseDir . '/core/Router'),
     'Plugins\\' => array($baseDir . '/plug-ins'),
     'Paginator\\' => array($baseDir . '/core/Paginator'),
+    'HybridLogic\\' => array($baseDir . '/core/HybridLogic'),
     'Fileuploader\\' => array($baseDir . '/core/Fileuploader'),
+    'Controller\\' => array($baseDir . '/core'),
 );

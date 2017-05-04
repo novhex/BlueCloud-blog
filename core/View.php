@@ -6,7 +6,7 @@
 * Copyright (c) 2017 Vhexzhen Lei
 * vhexzhenlei.tk
 */
-namespace Core\View;
+namespace View;
 
 class View {
 
@@ -17,7 +17,9 @@ class View {
 
 	}
 
-	public static function show($view,$vars=[]){
+	public static function show($view,$vars=[],$http_headers = array()){
+
+
 
 		if($vars != NULL) {
 
@@ -26,8 +28,18 @@ class View {
 				self::$pageVars[$key] = $value;
 			}
 		}
+		
 
 		if(file_exists(ROOT_DIR .'views/'. $view .'.php')){
+
+			if(sizeof($http_headers)>=1){
+
+				foreach($http_headers as $header_keys =>$header_vals){
+
+					header($header_keys.':'.$header_vals);
+				}
+			}
+
 
 
 			extract(self::$pageVars);

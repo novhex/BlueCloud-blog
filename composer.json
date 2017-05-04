@@ -3,10 +3,9 @@
     "classmap": [
       "database/DBconnection.php",
       "core/Bootstrap.php",
-      "core/Controller.php",
       "core/FluentPDO/FluentPDO.php",
-      "core/View.php",
-      "helpers/"
+      "helpers/",
+      "core/HTMLPurifier/HTMLPurifier.auto.php"
     ],
     "files":[
            
@@ -16,9 +15,11 @@
       "Router\\":"core/Router/",
       "Plugins\\":"plug-ins",
       "Routes\\":"routes/",
-      "Validator\\":"core/Validator/",
       "Paginator\\":"core/Paginator/",
-      "Fileuploader\\":"core/Fileuploader"
+      "Fileuploader\\":"core/Fileuploader",
+      "HybridLogic\\": "core/HybridLogic",
+      "View\\":"core/",
+      "Controller\\":"core/"
     }
   
   }
